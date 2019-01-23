@@ -1,0 +1,9 @@
+npx create-react-app my-app --scripts-version=@jpavon/react-scripts-ts
+yarn add -D react-app-rewired
+
+  "scripts": {
+    "start": "react-app-rewired start --scripts-version @jpavon/react-scripts-ts",
+    "build": "react-app-rewired build --scripts-version @jpavon/react-scripts-ts",
+    "test": "react-app-rewired test --scripts-version @jpavon/react-scripts-ts --env=jsdom"
+  },
+
