@@ -79,36 +79,15 @@ const Nginx = observer((props: Props) => {
                 </div>
             </div>
 
-            <AppDetails form={form}>
-                <div className={Classes.TEXT_MUTED}>
-                    <p>
-                        Yarn comes pre-installed as a global package.
-                    </p>
-                </div>
-            </AppDetails>
+            <AppDetails form={form} />
 
             <Divider />
 
             <NginxVhost form={form}>
                 <div className={Classes.TEXT_MUTED}>
                     <p>
-                        The default vhost config assumes your app has
-                        a <Code>public</Code> directory and that it is started by
-                        running <Code>app.js</Code>.
-                    </p>
-
-                    <p>
-                        If either of the above do not match your app's requirements you can create
-                        your own vhost config.
-                    </p>
-
-                    <p>
-                        The base image is <a
-                            href="https://hub.docker.com/r/phusion/passenger-nodejs"
-                            target="_blank">
-                                <Code>phusion/passenger-nodejs</Code></a> and
-                        its <a href="https://www.phusionpassenger.com/docs/references/config_reference/nginx/"
-                           target="_blank">configuration reference may be found here.</a>
+                        Leave <Code>server_name _</Code> as-is in the config.
+                        Instead, change the <Code>Server Hostname</Code> field to the right.
                     </p>
                 </div>
             </NginxVhost>
