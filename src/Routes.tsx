@@ -12,6 +12,9 @@ import ServiceCreate          from "@app/Page/Service/Create";
 import ServiceCreateNginx     from "@app/Page/Service/Create/Nginx";
 import ServiceUpdateNginx     from "@app/Page/Service/Update/Nginx";
 
+import ServiceCreateApache     from "@app/Page/Service/Create/Apache";
+import ServiceUpdateApache     from "@app/Page/Service/Update/Apache";
+
 import ServiceCreateNode      from "@app/Page/Service/Create/Node";
 import ServiceCreateNodeNginx from "@app/Page/Service/Create/NodeNginx";
 
@@ -52,6 +55,15 @@ const Routes = () => {
                 ]} />
                 <Route component={wrapper(ServiceUpdateNginx)} path={[
                     "/service/update/nginx/:id",
+                ]} />
+
+            { /*** Apache ***/ }
+                <Route component={wrapper(ServiceCreateApache)} path={[
+                    "/service/create/apache/:version",
+                    "/service/create/apache",
+                ]} />
+                <Route component={wrapper(ServiceUpdateApache)} path={[
+                    "/service/update/apache/:id",
                 ]} />
 
             { /*** Node ***/ }
