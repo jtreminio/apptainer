@@ -27,7 +27,7 @@ import StoreContext from "@app/Store";
 
 type Props = RouteComponentProps<{ version?: string }> & {}
 
-const Apache = observer((props: Props) => {
+const Create = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
     const serviceTypeSlug = "apache";
 
@@ -109,4 +109,4 @@ const Apache = observer((props: Props) => {
     );
 });
 
-export default withRouter(Apache);
+export default withRouter(Create);

@@ -25,7 +25,7 @@ import StoreContext from "@app/Store";
 
 type Props = RouteComponentProps<{ version?: string }> & {}
 
-const Node = observer((props: Props) => {
+const Create = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
     const serviceTypeSlug = "nodejs";
 
@@ -103,4 +103,4 @@ const Node = observer((props: Props) => {
     );
 });
 
-export default withRouter(Node);
+export default withRouter(Create);

@@ -36,7 +36,7 @@ import StoreContext from "@app/Store";
 
 type Props = RouteComponentProps<{ id?: string }> & {}
 
-const Php = observer((props: Props) => {
+const Update = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const [service] = React.useState(() => {
@@ -130,4 +130,4 @@ const Php = observer((props: Props) => {
     );
 });
 
-export default withRouter(Php);
+export default withRouter(Update);

@@ -38,7 +38,7 @@ import StoreContext  from "@app/Store";
 
 type Props = RouteComponentProps<{ version?: string }> & {}
 
-const PhpNginx = observer((props: Props) => {
+const Create = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
     const serviceTypeSlug = "php-nginx";
 
@@ -159,4 +159,4 @@ const PhpNginx = observer((props: Props) => {
     );
 });
 
-export default withRouter(PhpNginx);
+export default withRouter(Create);

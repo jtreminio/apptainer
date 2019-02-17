@@ -26,7 +26,7 @@ import StoreContext from "@app/Store";
 
 type Props = RouteComponentProps<{ id?: string }> & {}
 
-const Node = observer((props: Props) => {
+const Update = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const [service] = React.useState(() => {
@@ -105,4 +105,4 @@ const Node = observer((props: Props) => {
     );
 });
 
-export default withRouter(Node);
+export default withRouter(Update);

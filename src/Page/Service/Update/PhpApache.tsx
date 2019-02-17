@@ -38,7 +38,7 @@ import StoreContext   from "@app/Store";
 
 type Props = RouteComponentProps<{ id?: string }> & {}
 
-const PhpApache = observer((props: Props) => {
+const Update = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const [service] = React.useState(() => {
@@ -155,4 +155,4 @@ const PhpApache = observer((props: Props) => {
     );
 });
 
-export default withRouter(PhpApache);
+export default withRouter(Update);

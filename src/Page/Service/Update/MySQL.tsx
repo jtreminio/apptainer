@@ -25,7 +25,7 @@ import StoreContext from "@app/Store";
 
 type Props = RouteComponentProps<{ id?: string }> & {}
 
-const MySQL = observer((props: Props) => {
+const Update = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const [service] = React.useState(() => {
@@ -101,4 +101,4 @@ const MySQL = observer((props: Props) => {
     );
 });
 
-export default withRouter(MySQL);
+export default withRouter(Update);

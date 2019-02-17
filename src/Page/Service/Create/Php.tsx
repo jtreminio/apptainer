@@ -36,7 +36,7 @@ import StoreContext from "@app/Store";
 
 type Props = RouteComponentProps<{ version?: string }> & {}
 
-const Php = observer((props: Props) => {
+const Create = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
     const serviceTypeSlug = "php";
 
@@ -131,4 +131,4 @@ const Php = observer((props: Props) => {
     );
 });
 
-export default withRouter(Php);
+export default withRouter(Create);

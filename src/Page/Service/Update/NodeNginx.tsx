@@ -28,7 +28,7 @@ import StoreContext  from "@app/Store";
 
 type Props = RouteComponentProps<{ id?: string }> & {}
 
-const NodeNginx = observer((props: Props) => {
+const Update = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const [service] = React.useState(() => {
@@ -133,4 +133,4 @@ const NodeNginx = observer((props: Props) => {
     );
 });
 
-export default withRouter(NodeNginx);
+export default withRouter(Update);

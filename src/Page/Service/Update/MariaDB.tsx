@@ -25,7 +25,7 @@ import StoreContext from "@app/Store";
 
 type Props = RouteComponentProps<{ id?: string }> & {}
 
-const MariaDB = observer((props: Props) => {
+const Update = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const [service] = React.useState(() => {
@@ -101,4 +101,4 @@ const MariaDB = observer((props: Props) => {
     );
 });
 
-export default withRouter(MariaDB);
+export default withRouter(Update);
