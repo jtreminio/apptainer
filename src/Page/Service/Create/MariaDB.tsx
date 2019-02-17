@@ -17,8 +17,8 @@ import {
     withRouter,
 } from "react-router-dom";
 
+import CreateSubmit from "@app/Components/Service/CreateSubmit";
 import MySQLDetails from "@app/Components/Service/MySQLDetails";
-import Toaster      from "@app/Components/Toaster";
 import Form         from "@app/Form/Service/MySQLForm";
 import StoreContext from "@app/Store";
 
@@ -44,23 +44,12 @@ const Create = observer((props: Props) => {
     });
 
     const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-        form.nameInUse.value = !!stores.serviceStore.findByName(form.name.value);
-
-        await form.onSubmit(e);
+        await CreateSubmit({e, form, stores});
 
         if (form.form.hasError) {
-            console.log(`Form errors: ${form.form.error}`);
-
-            Toaster.show({
-                icon: IconNames.ERROR,
-                intent: Intent.DANGER,
-                message: "The form has errors. Please double check and try again.",
-            });
-
             return;
         }
 
-        stores.serviceStore.createFromForm(form);
         stores.routingStore.push("/service");
     };
 

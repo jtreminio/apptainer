@@ -19,8 +19,8 @@ import {
 } from "react-router-dom";
 
 import AppDetails    from "@app/Components/Service/AppDetails";
+import CreateSubmit  from "@app/Components/Service/CreateSubmit";
 import NginxAppVhost from "@app/Components/Service/NginxAppVhost";
-import Toaster       from "@app/Components/Toaster";
 import vhosts        from "@app/data/nginx";
 import Form          from "@app/Form/Service/NodeWebForm";
 import StoreContext  from "@app/Store";
@@ -53,23 +53,12 @@ const Create = observer((props: Props) => {
     });
 
     const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-        form.nameInUse.value = !!stores.serviceStore.findByName(form.name.value);
-
-        await form.onSubmit(e);
+        await CreateSubmit({e, form, stores});
 
         if (form.form.hasError) {
-            console.log(`Form errors: ${form.form.error}`);
-
-            Toaster.show({
-                icon: IconNames.ERROR,
-                intent: Intent.DANGER,
-                message: "The form has errors. Please double check and try again.",
-            });
-
             return;
         }
 
-        stores.serviceStore.createFromForm(form);
         stores.routingStore.push("/service");
     };
 
