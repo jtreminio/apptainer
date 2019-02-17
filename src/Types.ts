@@ -48,6 +48,13 @@ export interface ServiceAppFormI extends ServiceBaseFormI {
     appRoot: FieldState<string>,
 }
 
+// MariaDB/MySQL/PostgreSQL form fields
+export interface ServiceSqlFormI extends ServiceBaseFormI {
+    dbName: FieldState<string>,
+    dbUser: FieldState<string>,
+    dbPw: FieldState<string>,
+}
+
 // Nginx/Apache + App form fields
 export interface ServiceAppVhostFormI extends ServiceAppFormI {
     vhost: FieldState<string>,

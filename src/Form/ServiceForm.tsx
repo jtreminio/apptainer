@@ -21,7 +21,7 @@ export default abstract class ServiceForm implements ServiceBaseFormI, Jsonify {
     public name = new FieldState("")
         .validators(value => {
             return Required({value}) ||
-                MinLength({value, length: 3}) ||
+                MinLength({value, length: 2}) ||
                 MaxLength({value, length: 50});
         });
 

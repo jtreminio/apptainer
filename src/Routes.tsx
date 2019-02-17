@@ -29,6 +29,9 @@ import ServiceUpdatePhp       from "@app/Page/Service/Update/Php";
 import ServiceUpdatePhpApache from "@app/Page/Service/Update/PhpApache";
 import ServiceUpdatePhpNginx  from "@app/Page/Service/Update/PhpNginx";
 
+import ServiceCreateMariaDB   from "@app/Page/Service/Create/MariaDB";
+import ServiceUpdateMariaDB   from "@app/Page/Service/Update/MariaDB";
+
 import ServiceList            from "@app/Page/Service/List";
 
 // proptypes complains Route.path must match only string
@@ -105,6 +108,15 @@ const Routes = () => {
                 ]} />
                 <Route component={wrapper(ServiceUpdatePhpNginx)} path={[
                     "/service/update/php-nginx/:id",
+                ]} />
+
+            { /*** MariaDB ***/ }
+                <Route component={wrapper(ServiceCreateMariaDB)} path={[
+                    "/service/create/mariadb/:version",
+                    "/service/create/mariadb",
+                ]} />
+                <Route component={wrapper(ServiceUpdateMariaDB)} path={[
+                    "/service/update/mariadb/:id",
                 ]} />
             </Switch>
         </div>
