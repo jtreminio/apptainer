@@ -30,7 +30,7 @@ import {
 } from "@app/data/php";
 import AppDetails     from "@app/Components/Service/AppDetails";
 import ApacheAppVhost from "@app/Components/Service/ApacheAppVhost";
-import Toaster        from "@app/Components/Toaster";
+import UpdateSubmit   from "@app/Components/Service/UpdateSubmit";
 import vhosts         from "@app/data/apache";
 import Service        from "@app/Entity/Service";
 import Form           from "@app/Form/Service/PhpWebForm";
@@ -62,24 +62,12 @@ const Update = observer((props: Props) => {
     });
 
     const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-        const existing = stores.serviceStore.findByName(form.name.value);
-        form.nameInUse.value = !!(existing && (existing.id !== service.id));
-
-        await form.onSubmit(e);
+        await UpdateSubmit({e, form, service, stores});
 
         if (form.form.hasError) {
-            console.log(`Form errors: ${form.form.error}`);
-
-            Toaster.show({
-                icon: IconNames.ERROR,
-                intent: Intent.DANGER,
-                message: "The form has errors. Please double check and try again.",
-            });
-
             return;
         }
 
-        stores.serviceStore.updateFromForm(service, form);
         stores.routingStore.push("/service");
     };
 
