@@ -141,7 +141,7 @@ select optgroup{
 
     nav.bottom {
         position: sticky;
-        bottom: $pt-navbar-height;
+        bottom: 0;
         z-index: 10;
     }
 

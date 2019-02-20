@@ -60,10 +60,10 @@ const Sidebar = observer((props: Props) => {
 
                 <ButtonGroup
                     minimal
-                    vertical
                     large
                     fill
                     alignText={Alignment.LEFT}
+                    className="mb-1"
                 >
                     <RouterButton
                         activeOnlyWhenExact
@@ -183,7 +183,6 @@ const RenderServiceSection = observer((props: ServiceProp) => {
                 minimal
                 vertical
                 large
-                fill
                 alignText={Alignment.LEFT}
                 className="mb-3"
             >
