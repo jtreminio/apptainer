@@ -25,6 +25,7 @@ import {
     RouteComponentProps,
     withRouter,
 } from "react-router-dom";
+import _ from "underscore";
 
 import ProjectCreate from "@app/Components/ProjectCreate";
 import Project       from "@app/Entity/Project";
@@ -36,7 +37,8 @@ type Props = RouteComponentProps<{ projectId: string }> & {}
 const Sidebar = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
-    const currentProject = stores.projectStore.current;
+    const currentProject = stores.projectStore.current
+        || _.first(stores.projectStore.projects);
     const currentService = stores.serviceStore.current;
 
     const onLinkClick = (to: string) => stores.routingStore.push(to);
