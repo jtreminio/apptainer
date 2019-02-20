@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const CreateBundle = () => {
+const SelectBundle = () => {
     return (
         <>
             Pre-configured tab!
@@ -8,4 +8,4 @@ const CreateBundle = () => {
     );
 };
 
-export default CreateBundle;
+export default SelectBundle;

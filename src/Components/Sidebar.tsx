@@ -22,24 +22,37 @@ import {
 } from "mobx-react-lite";
 import {
     Route,
+    RouteComponentProps,
     withRouter,
 } from "react-router-dom";
 
 import ProjectCreate from "@app/Components/ProjectCreate";
+import Project       from "@app/Entity/Project";
+import Service       from "@app/Entity/Service";
 import StoreContext  from "@app/Store";
 
-type Props = {}
+type Props = RouteComponentProps<{ projectId: string }> & {}
 
 const Sidebar = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
+
+    const currentProject = stores.projectStore.current;
+    const currentService = stores.serviceStore.current;
 
     const onLinkClick = (to: string) => stores.routingStore.push(to);
 
     return (
         <div id="sidebar">
             <nav className="top">
-                <RenderProjectSection onLinkClick={onLinkClick} />
-                <RenderServiceSection onLinkClick={onLinkClick} />
+                <RenderProjectSection
+                    currentProject={currentProject}
+                    onLinkClick={onLinkClick}
+                />
+                <RenderServiceSection
+                    currentProject={currentProject}
+                    currentService={currentService}
+                    onLinkClick={onLinkClick}
+                />
             </nav>
 
             <nav className="bottom">
@@ -73,11 +86,12 @@ const Sidebar = observer((props: Props) => {
     );
 });
 
-type RouteLinkProp = {
+type ProjectProp = {
+    currentProject: Project | undefined,
     onLinkClick: (to: string) => void,
 }
 
-const RenderProjectSection = observer((props: RouteLinkProp) => {
+const RenderProjectSection = observer((props: ProjectProp) => {
     const stores = React.useContext(StoreContext);
 
     const [modalOpen, setModalOpen] = React.useState(false);
@@ -86,13 +100,12 @@ const RenderProjectSection = observer((props: RouteLinkProp) => {
         const project = stores.projectStore.find(e.currentTarget.value);
 
         if (project) {
-            stores.projectStore.current = project;
-            props.onLinkClick("/service");
+            props.onLinkClick(`/project/${project.id}/service`);
         }
     };
 
-    const handleSubmit = () => {
-        props.onLinkClick("/service");
+    const handleSubmit = (project: Project) => {
+        props.onLinkClick(`/project/${project.id}/service`);
         handleClose();
     };
 
@@ -116,7 +129,7 @@ const RenderProjectSection = observer((props: RouteLinkProp) => {
 
             <HTMLSelect
                 large
-                value={stores.projectStore.current.id}
+                value={props.currentProject ? props.currentProject.id : undefined}
                 onChange={itemClick}
                 className="mb-3 mx-1"
             >
@@ -138,8 +151,18 @@ const RenderProjectSection = observer((props: RouteLinkProp) => {
     )
 });
 
-const RenderServiceSection = observer((props: RouteLinkProp) => {
-    const stores = React.useContext(StoreContext);
+type ServiceProp = ProjectProp & {
+    currentService: Service | undefined,
+}
+
+const RenderServiceSection = observer((props: ServiceProp) => {
+    if (!props.currentProject) {
+        return (
+            <></>
+        );
+    }
+
+    const basePath = `/project/${props.currentProject.id}/service`;
 
     return (
         <>
@@ -150,7 +173,7 @@ const RenderServiceSection = observer((props: RouteLinkProp) => {
                     small
                     icon={IconNames.ADD}
                     intent={Intent.PRIMARY}
-                    onClick={() => props.onLinkClick("/service/create")}
+                    onClick={() => props.onLinkClick(`${basePath}/create`)}
                     className={Classes.FIXED}
                     text="NEW"
                 />
@@ -164,12 +187,12 @@ const RenderServiceSection = observer((props: RouteLinkProp) => {
                 alignText={Alignment.LEFT}
                 className="mb-3"
             >
-                {stores.projectStore.current.services.map(service =>
+                {props.currentProject.services.map(service =>
                     <RouterButton
                         key={service.id}
                         activeOnlyWhenExact
                         onClick={props.onLinkClick}
-                        to={`/service/update/${service.type.slug}/${service.id}`}
+                        to={`${basePath}/${service.id}/${service.type.slug}`}
                         icon={IconNames.LAYERS}
                         intent={Intent.PRIMARY}
                     >

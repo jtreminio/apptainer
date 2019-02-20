@@ -1,55 +1,73 @@
 import * as React from "react";
 import {
-    Alignment,
-    H1,
-    Navbar,
-    Tab,
-    TabId,
-    Tabs,
-} from "@blueprintjs/core";
-import {
     observer,
 } from "mobx-react-lite";
+import {
+    Route,
+    RouteComponentProps,
+    Switch,
+    withRouter,
+} from "react-router-dom";
 
-import CreateBundle from "@app/Page/Service/CreateBundle";
-import CreateCustom from "@app/Page/Service/CreateCustom";
+import wrapper   from "@app/Components/ComponentWrapper";
+import Apache    from "@app/Page/Service/Create/Apache";
+import MariaDB   from "@app/Page/Service/Create/MariaDB";
+import MySQL     from "@app/Page/Service/Create/MySQL";
+import Nginx     from "@app/Page/Service/Create/Nginx";
+import Node      from "@app/Page/Service/Create/Node";
+import NodeNginx from "@app/Page/Service/Create/NodeNginx";
+import Php       from "@app/Page/Service/Create/Php";
+import PhpApache from "@app/Page/Service/Create/PhpApache";
+import PhpNginx  from "@app/Page/Service/Create/PhpNginx";
+import Select    from "@app/Page/Service/Create/Select";
 
-type Props = {}
+type Props = RouteComponentProps<{ projectId: string }> & {}
 
 const Create = observer((props: Props) => {
-    const [tab, setTab] = React.useState<React.ReactText>("custom");
+    const basePath = "/project/:projectId/service/create";
 
     return (
-        <>
-            <div className="page-header">
-                <H1>Create New Service</H1>
-                <div className="page-options center">
-                    <Navbar>
-                        <Navbar.Group>
-                            <Navbar.Heading>
-                                Choose Type:
-                            </Navbar.Heading>
-                        </Navbar.Group>
-                        <Navbar.Group align={Alignment.RIGHT}>
-                            <Tabs id="create-service-tabs" animate large
-                                  selectedTabId={tab}
-                                  onChange={(tab: TabId) => setTab(tab)}
-                            >
-                                <Tab id="custom">Custom</Tab>
-                                <Tab id="bundle">Bundle</Tab>
-                            </Tabs>
-                        </Navbar.Group>
-                    </Navbar>
-                </div>
-            </div>
+        <Switch>
+            <Route component={wrapper(Apache)} exact path={[
+                `${basePath}/apache/:version`,
+                `${basePath}/apache`,
+            ]} />
+            <Route component={wrapper(MariaDB)} exact path={[
+                `${basePath}/mariadb/:version`,
+                `${basePath}/mariadb`,
+            ]} />
+            <Route component={wrapper(MySQL)} exact path={[
+                `${basePath}/mysql/:version`,
+                `${basePath}/mysql`,
+            ]} />
+            <Route component={wrapper(Nginx)} exact path={[
+                `${basePath}/nginx/:version`,
+                `${basePath}/nginx`,
+            ]} />
+            <Route component={wrapper(Node)} exact path={[
+                `${basePath}/nodejs/:version`,
+                `${basePath}/nodejs`,
+            ]} />
+            <Route component={wrapper(NodeNginx)} exact path={[
+                `${basePath}/nodejs-nginx/:version`,
+                `${basePath}/nodejs-nginx`,
+            ]} />
+            <Route component={wrapper(Php)} exact path={[
+                `${basePath}/php/:version`,
+                `${basePath}/php`,
+            ]} />
+            <Route component={wrapper(PhpApache)} exact path={[
+                `${basePath}/php-apache/:version`,
+                `${basePath}/php-apache`,
+            ]} />
+            <Route component={wrapper(PhpNginx)} exact path={[
+                `${basePath}/php-nginx/:version`,
+                `${basePath}/php-nginx`,
+            ]} />
 
-            <Tabs id="create-service-panels" selectedTabId={tab}
-                  renderActiveTabPanelOnly={false}>
-                <Tab id="custom" panel={<CreateCustom />} />
-                <Tab id="bundle" panel={<CreateBundle />} />
-            </Tabs>
-        </>
+            <Route component={wrapper(Select)} />
+        </Switch>
     );
 });
 
-export default Create;
+export default withRouter(Create);

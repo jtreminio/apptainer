@@ -23,21 +23,14 @@ import Service      from "@app/Entity/Service";
 import Form         from "@app/Form/Service/MySQLForm";
 import StoreContext from "@app/Store";
 
-type Props = RouteComponentProps<{ id?: string }> & {}
+type Props = RouteComponentProps<{ projectId: string, serviceId: string }> & {}
 
 const Update = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const [service] = React.useState(() => {
-        return stores.serviceStore.find(props.match.params.id) as Service
+        return stores.serviceStore.find(props.match.params.serviceId) as Service
     });
-
-    // todo check service belongs to project
-    if (!service || stores.projectStore.current !== service.project) {
-        console.log(`Service ID ${props.match.params.id} not found`);
-
-        stores.routingStore.push("/service");
-    }
 
     const [form] = React.useState(() => {
         return new Form().fromService(service)
@@ -50,7 +43,7 @@ const Update = observer((props: Props) => {
             return;
         }
 
-        stores.routingStore.push("/service");
+        stores.routingStore.push(`/project/${props.match.params.projectId}/service`);
     };
 
     return (

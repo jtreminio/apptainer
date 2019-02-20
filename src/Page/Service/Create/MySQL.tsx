@@ -22,7 +22,7 @@ import MySQLDetails from "@app/Components/Service/MySQLDetails";
 import Form         from "@app/Form/Service/MySQLForm";
 import StoreContext from "@app/Store";
 
-type Props = RouteComponentProps<{ version?: string }> & {}
+type Props = RouteComponentProps<{ projectId: string, version?: string }> & {}
 
 const Create = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
@@ -50,7 +50,7 @@ const Create = observer((props: Props) => {
             return;
         }
 
-        stores.routingStore.push("/service");
+        stores.routingStore.push(`/project/${props.match.params.projectId}/service`);
     };
 
     return (

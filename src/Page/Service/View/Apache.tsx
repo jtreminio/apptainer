@@ -19,27 +19,20 @@ import {
 } from "react-router-dom";
 
 import AppDetails   from "@app/Components/Service/AppDetails";
-import NginxVhost   from "@app/Components/Service/NginxVhost";
+import ApacheVhost  from "@app/Components/Service/ApacheVhost";
 import UpdateSubmit from "@app/Components/Service/UpdateSubmit";
 import Service      from "@app/Entity/Service";
 import Form         from "@app/Form/Service/WebServerForm";
 import StoreContext from "@app/Store";
 
-type Props = RouteComponentProps<{ id?: string }> & {}
+type Props = RouteComponentProps<{ projectId: string, serviceId: string }> & {}
 
 const Update = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const [service] = React.useState(() => {
-        return stores.serviceStore.find(props.match.params.id) as Service
+        return stores.serviceStore.find(props.match.params.serviceId) as Service
     });
-
-    // todo check service belongs to project
-    if (!service || stores.projectStore.current !== service.project) {
-        console.log(`Service ID ${props.match.params.id} not found`);
-
-        stores.routingStore.push("/service");
-    }
 
     const [form] = React.useState(() => {
         return new Form().fromService(service)
@@ -52,7 +45,7 @@ const Update = observer((props: Props) => {
             return;
         }
 
-        stores.routingStore.push("/service");
+        stores.routingStore.push(`/project/${props.match.params.projectId}/service`);
     };
 
     return (
@@ -69,14 +62,14 @@ const Update = observer((props: Props) => {
 
             <Divider />
 
-            <NginxVhost form={form}>
+            <ApacheVhost form={form}>
                 <div className={Classes.TEXT_MUTED}>
                     <p>
-                        Leave <Code>server_name _</Code> as-is in the config.
+                        Leave <Code>ServerName default.localhost</Code> as-is in the config.
                         Instead, change the <Code>Server Hostname</Code> field to the right.
                     </p>
                 </div>
-            </NginxVhost>
+            </ApacheVhost>
 
             <Divider />
 

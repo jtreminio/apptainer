@@ -18,32 +18,31 @@ import {
     withRouter,
 } from "react-router-dom";
 
+import {
+    IniFpm,
+    IniPhp,
+    IniXdebug,
+    ModulePhp,
+} from "@app/Components/Service/Php";
+import {
+    modules,
+    ModuleI,
+} from "@app/data/php";
 import AppDetails    from "@app/Components/Service/AppDetails";
 import NginxAppVhost from "@app/Components/Service/NginxAppVhost";
 import UpdateSubmit  from "@app/Components/Service/UpdateSubmit";
 import vhosts        from "@app/data/nginx";
 import Service       from "@app/Entity/Service";
-import Form          from "@app/Form/Service/NodeWebForm";
+import Form          from "@app/Form/Service/PhpWebForm";
 import StoreContext  from "@app/Store";
 
-type Props = RouteComponentProps<{ id?: string }> & {}
+type Props = RouteComponentProps<{ projectId: string, serviceId: string }> & {}
 
 const Update = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const [service] = React.useState(() => {
-        return stores.serviceStore.find(props.match.params.id) as Service
-    });
-
-    // todo check service belongs to project
-    if (!service || stores.projectStore.current !== service.project) {
-        console.log(`Service ID ${props.match.params.id} not found`);
-
-        stores.routingStore.push("/service");
-    }
-
-    const allVhosts = vhosts.filter(vhost => {
-        return vhost.engine === "node" || vhost.engine === "none";
+        return stores.serviceStore.find(props.match.params.serviceId) as Service
     });
 
     const [form] = React.useState(() => {
@@ -57,8 +56,13 @@ const Update = observer((props: Props) => {
             return;
         }
 
-        stores.routingStore.push("/service");
+        stores.routingStore.push(`/project/${props.match.params.projectId}/service`);
     };
+
+    const phpModules: ModuleI = modules[`v${service.version}`];
+    const allVhosts = vhosts.filter(vhost => {
+        return vhost.engine === "php" || vhost.engine === "none";
+    });
 
     return (
         <form className="service-form" onSubmit={onSubmit}>
@@ -73,7 +77,8 @@ const Update = observer((props: Props) => {
             <AppDetails form={form}>
                 <div className={Classes.TEXT_MUTED}>
                     <p>
-                        Yarn comes pre-installed as a global package.
+                        Composer comes pre-installed and is available
+                        as <Code className="text-nowrap">$ composer</Code>.
                     </p>
                 </div>
             </AppDetails>
@@ -83,26 +88,34 @@ const Update = observer((props: Props) => {
             <NginxAppVhost form={form} allVhosts={allVhosts}>
                 <div className={Classes.TEXT_MUTED}>
                     <p>
-                        The default vhost config assumes your app has
-                        a <Code>public</Code> directory and that it is started by
-                        running <Code>app.js</Code>.
+                        The container comes with Nginx configs for several common PHP applications.
+                        You can select one from the dropdown, or create your own custom config.
                     </p>
 
                     <p>
-                        If either of the above do not match your app's requirements you can create
-                        your own vhost config.
-                    </p>
-
-                    <p>
-                        The base image is <a
-                            href="https://hub.docker.com/r/phusion/passenger-nodejs"
-                            target="_blank">
-                                <Code>phusion/passenger-nodejs</Code></a> and
-                        its <a href="https://www.phusionpassenger.com/docs/references/config_reference/nginx/"
-                           target="_blank">configuration reference may be found here.</a>
+                        For more information about <Code>$cookie_XDEBUG_SESSION</Code> and&nbsp;
+                        <Code>$my_fastcgi_pass</Code> you can read my blog post,&nbsp;
+                        <a href="https://jtreminio.com/blog/all-in-one-php-fpm-nginx-apache-containers/"
+                           target="_blank">All-in-One PHP-FPM + Nginx/Apache Containers</a>.
                     </p>
                 </div>
             </NginxAppVhost>
+
+            <Divider />
+
+            <IniPhp form={form} />
+
+            <Divider />
+
+            <IniFpm form={form} />
+
+            <Divider />
+
+            <IniXdebug form={form} />
+
+            <Divider />
+
+            <ModulePhp form={form} allModules={phpModules} />
 
             <Divider />
 

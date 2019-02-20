@@ -14,34 +14,35 @@ import {
 } from "mobx-react-lite";
 import {
     Link,
+    RouteComponentProps,
+    withRouter,
 } from "react-router-dom";
 
+import Project      from "@app/Entity/Project";
 import StoreContext from "@app/Store";
 
-type Props = {}
+type Props = RouteComponentProps<{ projectId: string }> & {}
 
 const List = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
-    const newOnClick = () => stores.routingStore.push("/service/create");
+    const [project] = React.useState(() => {
+        return stores.projectStore.find(props.match.params.projectId) as Project;
+    });
+
+    const basePath = `/project/${project.id}/service`;
+
+    const newOnClick = () => {
+        return stores.routingStore.push(`${basePath}/create`);
+    };
 
     return (
         <>
             <div className="page-header">
                 <H1>Services</H1>
-                <div className="page-options">
-                    <AnchorButton
-                        className="button"
-                        rightIcon={IconNames.ADD}
-                        intent={Intent.NONE}
-                        onClick={newOnClick}
-                    >
-                        Add Service
-                    </AnchorButton>
-                </div>
             </div>
 
-            {stores.projectStore.current.services.length > 0 &&
+            {project.services.length > 0 &&
             <HTMLTable condensed className="w-100 mt-2">
                 <thead>
                 <tr>
@@ -51,12 +52,12 @@ const List = observer((props: Props) => {
                 </tr>
                 </thead>
                 <tbody>
-                {stores.projectStore.current.services.map(service =>
+                {project.services.map(service =>
                     <tr key={service.id}>
                         <td>{service.name}</td>
                         <td>{service.type.name}</td>
                         <td>
-                            <Link to={`/service/update/${service.type.slug}/${service.id}`}>
+                            <Link to={`${basePath}/${service.id}/${service.type.slug}`}>
                                 Update
                             </Link>
                         </td>
@@ -66,7 +67,7 @@ const List = observer((props: Props) => {
             </HTMLTable>
             }
 
-            {stores.projectStore.current.services.length === 0 &&
+            {project.services.length === 0 &&
             <NonIdealState
                 icon={IconNames.LAYERS}
                 title="No Services found"
@@ -87,4 +88,4 @@ const List = observer((props: Props) => {
     );
 });
 
-export default List;
+export default withRouter(List);

@@ -22,12 +22,13 @@ import {
 } from "mobx-react-lite";
 import _ from "underscore";
 
+import Project      from "@app/Entity/Project";
 import ServiceType  from "@app/Entity/ServiceType";
 import StoreContext from "@app/Store";
 
-type Props = {}
+type Props = { project: Project }
 
-const CreateCustom = observer((props: Props) => {
+const SelectCustom = observer((props: Props) => {
     const stores = React.useContext(StoreContext);
 
     const categories = ["All"].concat(...stores.serviceStore.serviceCategories());
@@ -91,6 +92,8 @@ const CreateCustom = observer((props: Props) => {
         );
     });
 
+    const basePath = `/project/${props.project.id}/service`;
+
     const defaultVersion = (serviceType: ServiceType) => {
         const versionIcon = serviceType.versions.length === 1
             ? IconNames.CARET_RIGHT
@@ -103,7 +106,9 @@ const CreateCustom = observer((props: Props) => {
                 rightIcon={versionIcon}
                 intent={Intent.PRIMARY}
                 onClick={() =>
-                    stores.routingStore.push(`/service/create/${serviceType.slug}`)
+                    stores.routingStore.push(
+                        `${basePath}/create/${serviceType.slug}`
+                    )
                 }
             >
                 Version {serviceType.versions[0]}
@@ -111,22 +116,22 @@ const CreateCustom = observer((props: Props) => {
         );
     };
 
-    const versionsMenu = (serviceType: ServiceType) => {
-        return (
-            <Menu>
-                <MenuDivider title="Choose Version" />
-                {serviceType.versions.map((version, key) =>
-                    <MenuItem
-                        key={`${serviceType.slug}-${version}`}
-                        text={`${version} ${key === 0 ? "(latest)" : ""}`}
-                        onClick={() =>
-                            stores.routingStore.push(`/service/create/${serviceType.slug}/${version}`)
-                        }
-                    />,
-                )}
-            </Menu>
-        );
-    };
+    const versionsMenu = (serviceType: ServiceType) =>
+        <Menu>
+            <MenuDivider title="Choose Version" />
+            {serviceType.versions.map((version, key) =>
+                <MenuItem
+                    key={`${serviceType.slug}-${version}`}
+                    text={`${version} ${key === 0 ? "(latest)" : ""}`}
+                    onClick={() =>
+                        stores.routingStore.push(
+                            `${basePath}/create/${serviceType.slug}/${version}`
+                        )
+                    }
+                />,
+            )}
+        </Menu>
+    ;
 
     return (
         <>
@@ -151,4 +156,4 @@ const CreateCustom = observer((props: Props) => {
     );
 });
 
-export default CreateCustom;
+export default SelectCustom;

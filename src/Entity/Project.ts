@@ -13,7 +13,7 @@ import Service from "@app/Entity/Service";
 
 export default class Project {
     @persist @observable
-    protected Id = cuid();
+    protected Id = cuid.slug();
 
     @persist @observable
     protected Name: string = "";

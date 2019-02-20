@@ -10,11 +10,12 @@ import {
     observer,
 } from "mobx-react-lite";
 
+import Project      from "@app/Entity/Project";
 import Form         from "@app/Form/ProjectForm";
 import StoreContext from "@app/Store";
 
 type Props = {
-    handleSubmit: () => void,
+    handleSubmit: (project: Project) => void,
 }
 
 const ProjectCreate = observer((props: Props) => {
@@ -29,9 +30,8 @@ const ProjectCreate = observer((props: Props) => {
         await form.onSubmit(e);
 
         if (!form.form.hasError) {
-            stores.projectStore.current = stores.projectStore.createFromForm(form);
-
-            props.handleSubmit();
+            const project = stores.projectStore.createFromForm(form);
+            props.handleSubmit(project);
         }
     };
 

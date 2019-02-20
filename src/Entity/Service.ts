@@ -16,7 +16,7 @@ import ServiceType  from "@app/Entity/ServiceType";
 
 export default class Service {
     @persist @observable
-    protected Id = cuid();
+    protected Id = cuid.slug();
 
     @persist @observable
     protected Name: string = "";

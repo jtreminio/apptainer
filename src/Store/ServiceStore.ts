@@ -1,11 +1,15 @@
 import cuid from "cuid";
 import {
     action,
+    computed,
     observable,
 } from "mobx";
 import {
     persist,
 } from "mobx-persist";
+import {
+    matchPath,
+} from "react-router-dom";
 
 import {
     ServiceCategories,
@@ -27,6 +31,26 @@ export default class ServiceStore {
         return this.Services
     }
 
+    @computed
+    get current(): Service | undefined {
+        const project = stores.projectStore.current;
+
+        if (!project) {
+            return undefined;
+        }
+
+        const match = matchPath(stores.routingStore.location.pathname, {
+            path: "/project/:projectId/service/:serviceId",
+        });
+
+        if (!match) {
+            return undefined;
+        }
+
+        // @ts-ignore
+        return this.find(match.params.serviceId || "");
+    }
+
     @action
     public add = (service: Service): number => {
         if (this.Services.some(s => s.id === service.id)) {
@@ -41,8 +65,10 @@ export default class ServiceStore {
     };
 
     public findByName = (name: string): Service | undefined => {
+        const project = stores.projectStore.current;
+
         return this.services.find(s => {
-            if (s.projectId !== stores.projectStore.current.id) {
+            if (!project || s.projectId !== project.id) {
                 return false;
             }
 
@@ -62,7 +88,7 @@ export default class ServiceStore {
     @action
     public createFromForm = (form: Form): Service => {
         const service = new Service();
-        service.project = stores.projectStore.current;
+        service.project = stores.projectStore.current!;
         service.name = form.name.$;
         service.version = form.version.$;
         service.type = form.type.$;
@@ -87,9 +113,10 @@ export default class ServiceStore {
     };
 
     public generateName = (type: ServiceType, defaultName?: string) => {
+        const project = stores.projectStore.current!;
         const baseName = defaultName || type.slug;
 
-        const servicesNames = this.findByProject(stores.projectStore.current).map(s => {
+        const servicesNames = this.findByProject(project).map(s => {
             return s.name;
         });
 

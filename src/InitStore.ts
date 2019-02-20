@@ -37,7 +37,6 @@ const init = async () => {
                 project.name = "Your Awesome Project";
 
                 stores.projectStore.add(project);
-                stores.projectStore.current = project;
 
                 console.log("Initial Project created");
             }
